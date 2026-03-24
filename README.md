@@ -13,12 +13,4 @@ A simple React frontend for EduNepal with pages like Home, About, Courses, Event
 * React
 * JavaScript
 
-## Installation
-
-```bash
-git clone https://github.com/your-username/your-repo-name.git
-cd your-repo-name
-npm install
-npm run dev
-```
 
