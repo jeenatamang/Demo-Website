@@ -4,8 +4,8 @@ import React, { useState } from "react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useApiHooks } from "../hooks/apiHooks";
-
 const Categories = () => {
+     
   const nav = useNavigate();
   const { name } = useParams();
   console.log("name", name);

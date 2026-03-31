@@ -24,8 +24,6 @@ const Schema = Yup.object().shape({
     .oneOf([Yup.ref('password'), null], 'Passwords must match')
     .required("Confirm password is required"),
     address: Yup.string()
-    .min(10, "Address must be at least 10 characters")
-    .max(100, "Address must be less than 100 characters")
     .required("Address is required"),
 });
 

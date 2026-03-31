@@ -15,7 +15,9 @@ const Header = () => {
           <li><NavLink to="/contact">Contact</NavLink></li>
           <li><a href="tel:+9779875640321">+977 9875640321</a></li>
       </ul>     
-      <button className='bg-sky-600 text-white rounded-lg px-5 py-2'>Register Now</button>
+      <a href="/register">
+        <button className='bg-sky-600 text-white rounded-lg px-5 py-2 cursor-pointer'>Register Now</button>
+      </a>
     </div>
   )
 }

@@ -1,29 +1,20 @@
 import { useState } from "react";
-// const Courses = () => {
-//     const [data,setData] = useState(1) 
-//     const increment =() =>{
-//         setData(data+1)
-//     }
-//     return (
-//         <div>
-//           <div>{data}</div> 
-//            <button onClick={increment}>increment</button>
-//         </div>
-//     )
-// }
+import { useSelector } from "react-redux";
 const Courses =()=>{
-    const [Courses, setCourses] = useState(0)
-    const increment =()=>{
-        setCourses(Courses+1)}
-    const decrement =()=>{
-        setCourses(Courses-1)
-    }
+   const post = useSelector((state)=> state.post)
+   console.log("this is post", post);
+
     return (
         <div>
-            <div className="mx-auto">
-                {Courses}</div> 
-                <button onClick={increment} className="border-2 rounded w-24 p-1">Increment</button> 
-                <button onClick={decrement} className="border-2 rounded w-24 p-1 ml-2">Decrement</button>
+           {post.map((item, index) => (
+            <div key={index}>
+              <h2>{item.FullName}</h2>
+                <p>{item.Email}</p>
+                <p>{item.phonenumber}</p>
+                <p>{item.classtype}</p>
+                <p>{item.course}</p>
+            </div>
+           ))}
         </div>
     )
 }

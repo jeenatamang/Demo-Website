@@ -10,6 +10,7 @@ import Events from './pages/Events.jsx';
 import Blog from './pages/Blog.jsx';
 import Courses from './pages/Courses.jsx';
 import Mainlayout from './Component/Mainlayout.jsx';
+import Register from './pages/Register.jsx';
 import Categories from './pages/Categories.jsx';
 import Product from './pages/Product.jsx';
 import ProductDetails from "./pages/Productdetails";
@@ -25,6 +26,7 @@ return (
       <Route path="/events" element={<Events />}  />
       <Route path="/courses" element={<Courses />}  />
       <Route path="/blog" element={<Blog />}  />
+      <Route path="/register" element={<Register />}  />
       <Route path="/categories/:name" element={<Categories />} />
       <Route path="/product/:id" element={<ProductDetails />} />
       <Route path="/category-description/:id" element={<CategoriesDescription />} />
