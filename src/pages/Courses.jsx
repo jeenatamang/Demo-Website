@@ -6,7 +6,7 @@ const Courses =()=>{
 
     return (
         <div>
-           {post.map((item, index) => (
+           {/* {post.map((item, index) => (
             <div key={index}>
               <h2>{item.FullName}</h2>
                 <p>{item.Email}</p>
@@ -14,7 +14,7 @@ const Courses =()=>{
                 <p>{item.classtype}</p>
                 <p>{item.course}</p>
             </div>
-           ))}
+           ))} */}
         </div>
     )
 }
