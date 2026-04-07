@@ -96,7 +96,7 @@ const Contact = () => {
       <label>Other
         <input type="radio" name="gender" value="other" checked={data.gender === 'other'} onChange={handleChange} />
       </label>
-      <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+      <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white block font-bold py-2 px-4 rounded">
         click me
       </button>
     </form>

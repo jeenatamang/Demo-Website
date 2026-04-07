@@ -29,7 +29,7 @@ const Register = () => {
         validationSchema={Schema}
         onSubmit={(values) => {
           console.log(values);
-          dispatch(addBlog(values));
+          dispatch(addBlog({...values,id:crypto.randomUUID()}));
         }}
       >
         {({ values, handleChange, handleSubmit, errors, touched }) => (
