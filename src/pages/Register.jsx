@@ -1,8 +1,10 @@
 import React from "react";
-import { Formik } from "formik";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { useDispatch } from "react-redux";
-import { addBlog } from "../Redux/blogSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { addBlog,editBlog } from "../Redux/blogSlice";
+import { useParams } from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 
 const Schema = Yup.object().shape({
   FullName: Yup.string().required("Full name is required"),
@@ -15,163 +17,180 @@ const Schema = Yup.object().shape({
 });
 
 const Register = () => {
-    const dispatch = useDispatch();
+  const { id } = useParams();
+  const isEditMode = Boolean(id)
+  console.log(isEditMode)
+  const dispatch = useDispatch();
+  const nav= useNavigate();
+
+  const posts = useSelector((state) => state.post.posts);
+
+  const existingPost = posts.find((item) => item.id === id);
+
   return (
-    <div className="min-h-screen flex items-center justify-center ">
+    <div className="min-h-screen flex items-center justify-center">
       <Formik
-        initialValues={{
-          FullName: "",
-          phonenumber: "",
-          email: "",
-          classtype: "",
-          course: [],
-        }}
+        enableReinitialize
+        initialValues={
+          existingPost
+            ? {
+                FullName: existingPost.FullName,
+                phonenumber: existingPost.phonenumber,
+                email: existingPost.email,
+                classtype: existingPost.classtype,
+                course: existingPost.course || [],
+              }
+            : {
+                FullName: "",
+                phonenumber: "",
+                email: "",
+                classtype: "",
+                course: [],
+              }
+        }
         validationSchema={Schema}
         onSubmit={(values) => {
-          console.log(values);
-          dispatch(addBlog({...values,id:crypto.randomUUID()}));
-        }}
+          if(isEditMode){
+              dispatch(editBlog({id,...values}))
+          }else{
+          dispatch(
+            addBlog({
+              ...values,
+              id: existingPost ? existingPost.id : crypto.randomUUID(),
+            })
+          );
+          nav("../courses")
+        }}}
       >
-        {({ values, handleChange, handleSubmit, errors, touched }) => (
-          <form
-            onSubmit={handleSubmit}
-            className="w-full max-w-md bg-white p-8 rounded-2xl shadow-xl space-y-5"
-          >
+        {() => (
+          <Form className="w-full max-w-md bg-white p-8 rounded-2xl shadow-xl space-y-5">
             <h1 className="text-2xl font-bold text-center text-gray-700">
-              Register
+              {isEditMode ? "Edit Registration" : "Register"}
             </h1>
+
             <div>
               <label className="block text-sm font-medium text-gray-600 mb-1">
                 Full Name
               </label>
-              <input
+              <Field
                 type="text"
                 name="FullName"
-                value={values.FullName}
-                onChange={handleChange}
-                className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
+                className="w-full px-3 py-2 border rounded-lg"
               />
-              {errors.FullName && touched.FullName && (
-                <p className="text-red-500 text-sm mt-1">{errors.FullName}</p>
-              )}
+              <ErrorMessage
+                name="FullName"
+                component="p"
+                className="text-red-500 text-sm"
+              />
             </div>
+
             <div>
               <label className="block text-sm font-medium text-gray-600 mb-1">
                 Phone Number
               </label>
-              <input
+              <Field
                 type="text"
                 name="phonenumber"
-                value={values.phonenumber}
-                onChange={handleChange}
-                className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
+                className="w-full px-3 py-2 border rounded-lg"
               />
-              {errors.phonenumber && touched.phonenumber && (
-                <p className="text-red-500 text-sm mt-1">
-                  {errors.phonenumber}
-                </p>
-              )}
+              <ErrorMessage
+                name="phonenumber"
+                component="p"
+                className="text-red-500 text-sm"
+              />
             </div>
+
             <div>
               <label className="block text-sm font-medium text-gray-600 mb-1">
                 Email
               </label>
-              <input
+              <Field
                 type="email"
                 name="email"
-                value={values.email}
-                onChange={handleChange}
                 className="w-full px-3 py-2 border rounded-lg"
               />
-              {errors.email && touched.email && (
-                <p className="text-red-500 text-sm mt-1">{errors.email}</p>
-              )}
+              <ErrorMessage
+                name="email"
+                component="p"
+                className="text-red-500 text-sm"
+              />
             </div>
+
             <div>
               <label className="block text-sm font-medium text-gray-600 mb-2">
                 Class Type
               </label>
+
               <div className="flex gap-6">
-                <label className="flex items-center gap-2 cursor-pointer">
-                  <input
+                <label className="flex items-center gap-2">
+                  <Field
                     type="radio"
                     name="classtype"
                     value="Physical"
-                    onChange={handleChange}
-                    className="accent-blue-500"
                   />
-                  <span>Physical</span>
+                  Physical
                 </label>
 
-                <label className="flex items-center gap-2 cursor-pointer">
-                  <input
+                <label className="flex items-center gap-2">
+                  <Field
                     type="radio"
                     name="classtype"
                     value="Online"
-                    onChange={handleChange}
-                    className="accent-blue-500"
                   />
-                  <span>Online</span>
+                  Online
                 </label>
               </div>
 
-              {errors.classtype && touched.classtype && (
-                <p className="text-red-500 text-sm mt-1">{errors.classtype}</p>
-              )}
+              <ErrorMessage
+                name="classtype"
+                component="p"
+                className="text-red-500 text-sm"
+              />
             </div>
+
             <div>
               <label className="block text-sm font-medium text-gray-600 mb-2">
                 Course
               </label>
 
-              <div className="grid grid-cols-2 gap-4">
-                <label className="flex items-center cursor-pointer">
-                  <input type="checkbox" value="Digital Marketing" name="course" onChange={handleChange} /> Digital
-                  Marketing
-                </label>
-                <label className="flex items-center cursor-pointer">
-                  <input type="checkbox" value="Web Development" name="course" onChange={handleChange} /> Web
-                  Development{" "}
-                </label>
-                <label className="flex items-center cursor-pointer">
-                  <input type="checkbox" value="Graphic Design" name="course" onChange={handleChange} /> Graphic
-                  Design{" "}
-                </label>
-                <label className="flex items-center cursor-pointer">
-                  <input type="checkbox" value="Data Analysis" name="course" onChange={handleChange} /> Data
-                  Analysis{" "}
-                </label>
-                <label className="flex items-center cursor-pointer">
-                  <input type="checkbox" value="Data Science" name="course" onChange={handleChange} /> Data
-                  Science{" "}
-                </label>
-                <label className="flex items-center cursor-pointer">
-                  <input type="checkbox" value="AI with Python" name="course" onChange={handleChange} /> AI with
-                  Python{" "}
-                </label>
-                <label className="flex items-center cursor-pointer">
-                  <input type="checkbox" value="Video Editing" name="course" onChange={handleChange} /> Video
-                  Editing{" "}
-                </label>
-                <label className="flex items-center cursor-pointer">
-                  <input type="checkbox" value="MERN stack" name="course" onChange={handleChange} /> MERN stack{" "}
-                </label>
-                <label className="flex items-center cursor-pointer">
-                  <input type="checkbox" value="UI/UX Design" name="course" onChange={handleChange} /> UI/UX
-                  Design{" "}
-                </label>
-                {errors.course && touched.course ? (
-                  <div className="text-red-500 text-sm">{errors.course}</div>
-                ) : null}
+              <div className="grid grid-cols-2 gap-3">
+                {[
+                  "Digital Marketing",
+                  "Web Development",
+                  "Graphic Design",
+                  "Data Analysis",
+                  "Data Science",
+                  "AI with Python",
+                  "Video Editing",
+                  "MERN stack",
+                  "UI/UX Design",
+                ].map((course) => (
+                  <label key={course} className="flex items-center gap-2">
+                    <Field
+                      type="checkbox"
+                      name="course"
+                      value={course}
+                    />
+                    {course}
+                  </label>
+                ))}
               </div>
+
+              <ErrorMessage
+                name="course"
+                component="p"
+                className="text-red-500 text-sm"
+              />
             </div>
+
             <button
               type="submit"
-              className="w-full bg-blue-500  text-white py-2 rounded-lg font-semibold"
+              className="w-full bg-blue-500 text-white py-2 rounded-lg font-semibold"
             >
-              Register Now
+              {isEditMode ? "Update" : "Register Now"}
+          
             </button>
-          </form>
+          </Form>
         )}
       </Formik>
     </div>

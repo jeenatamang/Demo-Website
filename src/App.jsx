@@ -30,6 +30,7 @@ return (
       <Route path="/categories/:name" element={<Categories />} />
       <Route path="/product/:id" element={<ProductDetails />} />
       <Route path="/category-description/:id" element={<CategoriesDescription />} />
+      <Route path="/courses/edit/:id" element={<Register/>} />
       </Route>
      </Routes>
   </div>

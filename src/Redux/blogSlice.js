@@ -24,6 +24,9 @@ const BlogSlice = createSlice ({
         },
         editBlog: (state,action) => {
             console.log(action.payload)
+            const updateData = action.payload
+            state.posts= state.posts.map((item)=>item.id===updateData.id? updateData :item)
+            setData(state.posts)
         }
     }
 }) 

@@ -1,11 +1,13 @@
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { deleteBlog } from "../Redux/blogSlice";
-import {editBlog} from "../Redux/blogSlice";
+// import {editBlog} from "../Redux/blogSlice";
+import {useNavigate} from "react-router-dom"
 
 const Courses = () => {
   const post = useSelector((state) => state.post.posts);
   const dispatch = useDispatch()
+  const nav = useNavigate()
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-5">
@@ -41,7 +43,7 @@ const Courses = () => {
           </div>
           <div className="m-4 space-x-4">
             <button
-              type="submit"
+            onClick={()=>nav(`edit/${item.id}`)}
               className="bg-black hover:bg-gray-800 text-white font-semibold border-none py-2 px-4 rounded cursor-pointer"
             >
               Edit{" "}
